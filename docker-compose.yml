@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+
+    postgres:
+      image: postgres:14.1-alpine
+      restart: always
+      environment:
+          POSTGRES_USER: "swordsecuser"
+          POSTGRES_DB: "swordsec_test"
+          POSTGRES_PASSWORD: "password"
+      ports:
+         - '5432:5432'
+      volumes:
+         - ./postgres-data/postgres:/var/lib/postgresql/data
+
+    redis:
+        image: redis:latest
+        ports:
+          - "6379:6379"
+        volumes:
+            - ./redis_docker:/redis
+
+    flask-app:
+        image: app-image
+        depends_on:
+            -   postgres
+        container_name: flask-app
+        build: flask_docker
+        restart: always
+        ports:
+            - '5000:5000'
+        volumes:
+            - ./flask_docker:/app
+
+    worker:
+        image: app-image:latest
+        depends_on:
+            - redis
+        command: rq worker --url redis://redis:6379
+        links:
+            - redis
