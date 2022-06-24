@@ -11,8 +11,10 @@ When flask server gets a `GET` request to `/add_user` endpoint, all of the users
 
 ### Cloning the repo
 
-`git clone https://github.com/teooman/SwordsecBackendSolution.git`
-`cd SwordSecBackendSolution`
+```
+git clone https://github.com/teooman/SwordsecBackendSolution.git
+cd SwordSecBackendSolution
+```
 
 ### Running the containers
 
